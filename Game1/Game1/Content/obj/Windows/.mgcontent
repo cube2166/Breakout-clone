@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/blank.png</File>
+    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/font.spritefont</File>
+    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/ball.png</File>
+    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/b1.png</File>
+    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/b2.png</File>
+    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/b3.png</File>
+    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/b4.png</File>
+  </SourceFiles>
+</SourceFileCollection>
