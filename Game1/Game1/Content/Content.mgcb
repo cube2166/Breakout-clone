@@ -92,3 +92,10 @@
 /processorParam:TextureFormat=Color
 /build:b4.png
 
+#begin GameState.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:GameState.spritefont
+

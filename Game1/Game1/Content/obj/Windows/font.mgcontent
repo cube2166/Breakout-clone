@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/font.spritefont</SourceFile>
+  <SourceFile>C:/Users/cube2166/Documents/Visual Studio 2015/GitHub/Breakout-clone/trunk/Game1/Game1/Content/font.spritefont</SourceFile>
   <SourceTime>2017-05-03T12:25:20.499478+08:00</SourceTime>
-  <DestFile>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/bin/Windows/font.xnb</DestFile>
-  <DestTime>2017-05-03T18:57:14.8075619+08:00</DestTime>
+  <DestFile>C:/Users/cube2166/Documents/Visual Studio 2015/GitHub/Breakout-clone/trunk/Game1/Game1/Content/bin/Windows/font.xnb</DestFile>
+  <DestTime>2017-05-04T18:15:30.8530674+08:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2017-03-01T23:05:36+08:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

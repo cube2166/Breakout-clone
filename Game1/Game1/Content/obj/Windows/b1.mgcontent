@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/b1.png</SourceFile>
+  <SourceFile>C:/Users/cube2166/Documents/Visual Studio 2015/GitHub/Breakout-clone/trunk/Game1/Game1/Content/b1.png</SourceFile>
   <SourceTime>2017-05-04T14:13:14.2259942+08:00</SourceTime>
-  <DestFile>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/bin/Windows/b1.xnb</DestFile>
-  <DestTime>2017-05-04T14:15:45.6716951+08:00</DestTime>
+  <DestFile>C:/Users/cube2166/Documents/Visual Studio 2015/GitHub/Breakout-clone/trunk/Game1/Game1/Content/bin/Windows/b1.xnb</DestFile>
+  <DestTime>2017-05-04T18:15:30.8656271+08:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T23:05:36+08:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

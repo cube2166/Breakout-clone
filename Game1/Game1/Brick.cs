@@ -26,12 +26,14 @@ namespace Game1
         public event Action<object> BreakEvent;
         public event Func<object, object, bool> ReflectionEvent;
 
-        public void OnBreak()
+        public bool OnBreak()
         {
             if(BreakEvent != null)
             {
                 BreakEvent(this);
+                return true;
             }
+            return false;
         }
 
         public void OnCheck()
@@ -62,9 +64,22 @@ namespace Game1
 
     public class MyBall : MyObject
     {
-        private float Speed { get; set; }
+        private float _speed;
+        public float Speed
+        {
+            get { return _speed; }
+            set
+            {
+                if(_speed != value)
+                {
+                    _speed = value;
+                    vx = Speed * Math.Cos(radians(_degree));
+                    vy = Speed * Math.Sin(radians(_degree));
+                }
+            }
+        }
         private double _degree;
-        private double Degree
+        public double Degree
         {
             get { return _degree; }
             set
@@ -216,16 +231,17 @@ namespace Game1
 
     public class MyObjList : ObservableCollection<MyObject>
     {
+        public int Score { get; set; }
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if(e.Action == NotifyCollectionChangedAction.Add)
+            if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 foreach (var item in e.NewItems)
                 {
                     MyObject temp = item as MyObject;
                     if (temp == null) continue;
-                    
-                    if(temp.canBreak == true)
+
+                    if (temp.canBreak == true)
                     {
                         temp.BreakEvent += Temp_BreakEvent;
                     }
@@ -239,10 +255,32 @@ namespace Game1
                     }
                 }
             }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                foreach (var item in e.OldItems)
+                {
+                    MyObject temp = item as MyObject;
+                    if (temp == null) continue;
+
+                    if (temp.canBreak == true)
+                    {
+                        temp.BreakEvent -= Temp_BreakEvent;
+                    }
+                    if (temp.canCheck == true)
+                    {
+                        temp.CheckEvent -= Temp_CheckEvent;
+                    }
+                    if (temp.canReflection == true)
+                    {
+                        temp.ReflectionEvent -= Temp_ReflectionEvent;
+                    }
+                }
+            }
         }
 
         private bool Temp_ReflectionEvent(object src, object dist)
         {
+            
             MyBall ball = dist as MyBall;
             MyObject trig = src as MyObject;
             if (ball == null || trig == null) return false;
@@ -284,7 +322,26 @@ namespace Game1
             else if ((pointB.X > trig.X) && (pointB.X <= trig.X + trig.Width) &&
                 (pointB.Y > trig.Y) && (pointB.Y <= trig.Y + trig.Height))
             {
-                ball.Reflection(1);
+                MyBoard temp = trig as MyBoard;
+                if(temp == null)
+                {
+                    ball.Reflection(1);
+                }
+                else
+                {
+                    float AA = (trig.X + trig.Width) - trig.X;
+                    float BB = (215 - 125);
+                    float CC = (pointB.X - trig.X);
+                    //float DD = (X - 125);
+
+                    //AA:BB = CC:DD
+                    //    BB* CC = AA * DD;
+                    //((BB * CC) + (125 * AA)) / AA;
+                    //((trig.X+trig.Width) - trig.X) : (215-125) = (pointB.X- trig.X) : (X-125);
+                    // (pointB.X - trig.X)* (215 - 125) = ((trig.X + trig.Width) - trig.X) * (X - 125)
+                    float deg = ((BB * CC) + (125 * AA)) / AA;
+                    ball.Degree = deg+90;
+                }
                 ball.Y += (trig.Y) - (int)pointB.Y;
                 return true;
             }
@@ -294,7 +351,7 @@ namespace Game1
 
         private void Temp_CheckEvent(object obj)
         {
-            MyObject ball = obj as MyObject; //球
+            MyBall ball = obj as MyBall; //球
             if (ball == null) return;
             //檢查碰撞對象
             foreach (var item in this)
@@ -306,7 +363,12 @@ namespace Game1
                 if (tempBool == true)
                 {
                     //檢查能否消失
-                    item.OnBreak();
+                    if(item.OnBreak() == true)
+                    {
+                        ball.Speed += 5;
+                        Score += 1;
+                    }
+                        
                     break;
                 }
             }

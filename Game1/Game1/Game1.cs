@@ -14,14 +14,18 @@ namespace Game1
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D blank;
-        Texture2D bb1;
-        Texture2D bb2;
         Texture2D ball;
         Texture2D[] brickArray;
-        SpriteFont font;
+        SpriteFont font, stateFont;
         MyBoard player;
         MyBall mb;
+        bool gameOver;
         MyObjList myObjectCollect;
+        List<MyBrick> brickCollect;
+        MyWall[] wallCollect;
+        MyFont gameTitle, showScore;
+        float screenWidth;
+        float screenHeight;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -41,6 +45,9 @@ namespace Game1
             // TODO: Add your initialization logic here
             IsMouseVisible = true;
 
+            screenHeight = graphics.PreferredBackBufferHeight;
+            screenWidth = graphics.PreferredBackBufferWidth;
+
             base.Initialize();
         }
 
@@ -48,9 +55,8 @@ namespace Game1
         {
             Texture2D temp = obj1 as Texture2D;
             MyObject temp2 = obj2 as MyObject;
-//            Vector2 spritePosition = new Vector2(temp2.X, temp2.Y);
             spriteBatch.Draw(temp, new Rectangle((int)temp2.X, (int)temp2.Y, temp2.Width, temp2.Height), temp2.cc);
- //           spriteBatch.Draw(temp, spritePosition, new Rectangle((int)temp2.X, (int)temp2.Y, temp2.Width, temp2.Height), null, temp2.cc);
+ //           spriteBatch.Draw(temp, new Rectangle((int)temp2.X, (int)temp2.Y, temp2.Width, temp2.Height), null, temp2.cc, temp2.da, new Vector2(0, 0), SpriteEffects.None, 0f);
         }
 
         void prepareShowFont(object obj1, object obj2)
@@ -72,6 +78,7 @@ namespace Game1
             blank = Content.Load<Texture2D>("blank");
             font = Content.Load<SpriteFont>("font");
             ball = Content.Load<Texture2D>("ball");
+            stateFont = Content.Load<SpriteFont>("GameState");
             brickArray = new Texture2D[4];
             for (int ii = 0; ii < brickArray.Length; ii++)
             {
@@ -80,12 +87,8 @@ namespace Game1
             }
             // TODO: use this.Content to load your game content here
 
-
-            MyWall[] wallCollect;
-            MyFont gameTitle;
-
             int offset = 600 + (800 - 600) / 2 - (int)font.MeasureString("Brick - Breaking").X / 2;
-            gameTitle = new MyFont(offset, 20, "Brick - Breaking", Color.Yellow, -1,font);
+            gameTitle = new MyFont(offset, 20, "Breakout Clone", Color.Yellow, -1, font);
             gameTitle.showHandler += prepareShowFont;
 
             player = new MyBoard(600 / 2 - 100 / 2, 600 - 20 - 10, 100, 20, Color.White, 5, 0 + 20, 600 - 20, blank);
@@ -104,6 +107,16 @@ namespace Game1
             myObjectCollect.Add(wallCollect[1]);
             myObjectCollect.Add(wallCollect[2]);
             myObjectCollect.Add(gameTitle);
+
+            gameTitle = new MyFont(offset, 20, "Breakout Clone", Color.Yellow, -1, font);
+            gameTitle.showHandler += prepareShowFont;
+
+            int offset2 = 600 + (800 - 600) / 2 - (int)font.MeasureString("Score : ").X / 2;
+            showScore = new MyFont(offset, 60, "Score : "+myObjectCollect.Score.ToString(), Color.Yellow, -1, font);
+            showScore.showHandler += prepareShowFont;
+            myObjectCollect.Add(showScore);
+
+            brickCollect = new List<MyBrick>();
 
             int maxCol = 10;
             int maxRow = 10;
@@ -126,16 +139,34 @@ namespace Game1
                     temp = new MyBrick(px, py, ww, hh, Color.White, text2D);
                     temp.showHandler += prepareShow;
                     myObjectCollect.Add(temp);
+                    brickCollect.Add(temp);
                 }
             }
             int size = 20;
 
- //           mb = new MyBall((int)player.X + player.Width / 2 - size/2, (int)player.Y - size, size, 5, Color.Red, ball);
+            //           mb = new MyBall((int)player.X + player.Width / 2 - size/2, (int)player.Y - size, size, 5, Color.Red, ball);
             mb = new MyBall((int)player.X + 50, (int)player.Y - 50, size, 200, Color.Red, blank);
             mb.showHandler += prepareShow;
             myObjectCollect.Add(mb);
 
         }
+        public void StartGame()
+        {
+            player.X = 600 / 2 - 100 / 2;
+            player.Y = 600 - 20 - 10;
+            mb.X = (int)player.X + 50;
+            mb.Y = (int)player.Y - 50;
+            mb.Speed = 200;
+            mb.Degree = -45;
+            myObjectCollect.Score = 0;
+            foreach (var item in brickCollect)
+            {
+                if (myObjectCollect.IndexOf(item) == -1)
+                    myObjectCollect.Add(item);
+            }
+
+        }
+
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -158,7 +189,13 @@ namespace Game1
 
             float elapsedTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            mb.Update(elapsedTime);
+            if (gameOver == false)
+            {
+                mb.Update(elapsedTime);
+                string ss = "Score: " + myObjectCollect.Score.ToString();
+                showScore.ss = ss;
+            }
+            if (mb.Y > 600) gameOver = true;
 
             KeyboardState keyboard = Keyboard.GetState();
             if (keyboard.IsKeyDown(Keys.A) || keyboard.IsKeyDown(Keys.Left))
@@ -168,6 +205,11 @@ namespace Game1
             else if (keyboard.IsKeyDown(Keys.D) || keyboard.IsKeyDown(Keys.Right))
             {
                 player.MoveRight();
+            }
+            else if (keyboard.IsKeyDown(Keys.R) && gameOver)
+            {
+                gameOver = false;
+                StartGame();
             }
 
             // TODO: Add your update logic here
@@ -184,12 +226,49 @@ namespace Game1
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin();
-
-            foreach (var item in myObjectCollect)
+            if (gameOver == true)
             {
-                item.Show();
-            }
+                // Fill the screen with black before the game starts
 
+                String title = "Breakout Clone";
+                string pressSpace = "Press Space to start";
+                String press = "Press";
+                String RR = " R";
+                String to_ReStart = " to ReStart";
+
+                // Measure the size of text in the given font
+                Vector2 titleSize = stateFont.MeasureString(title);
+                Vector2 pressSpaceSize = stateFont.MeasureString(pressSpace);
+                Vector2 pressSize = stateFont.MeasureString(press);
+                Vector2 RRSize = stateFont.MeasureString(RR);
+                Vector2 to_ReStartSize = stateFont.MeasureString(to_ReStart);
+
+                // Draw the text horizontally centered
+                spriteBatch.DrawString(stateFont, title,
+                new Vector2(screenWidth / 2 - titleSize.X / 2, screenHeight / 3),
+                Color.ForestGreen);
+                //spriteBatch.DrawString(stateFont, pressSpace,
+                //new Vector2(screenWidth / 2 - pressSpaceSize.X / 2,
+                //screenHeight / 2), Color.White);
+                spriteBatch.DrawString(stateFont, press,
+                new Vector2(screenWidth / 2 - pressSpaceSize.X / 2,
+                screenHeight / 2), Color.White);
+                spriteBatch.DrawString(stateFont, RR,
+                new Vector2(screenWidth / 2 - pressSpaceSize.X / 2+ pressSize.X,
+                screenHeight / 2), Color.Red);
+                spriteBatch.DrawString(stateFont, to_ReStart,
+                new Vector2(screenWidth / 2 - pressSpaceSize.X / 2 +pressSize.X + RRSize.X,
+                screenHeight / 2), Color.White);
+
+
+            }
+            else
+            {
+                foreach (var item in myObjectCollect)
+                {
+                    item.Show();
+                }
+            }
             spriteBatch.End();
 
             base.Draw(gameTime);

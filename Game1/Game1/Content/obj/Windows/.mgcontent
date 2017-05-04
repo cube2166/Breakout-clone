@@ -4,12 +4,13 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/blank.png</File>
-    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/font.spritefont</File>
-    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/ball.png</File>
-    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/b1.png</File>
-    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/b2.png</File>
-    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/b3.png</File>
-    <File>C:/Users/cube2166/documents/visual studio 2015/Projects/Game1/Game1/Content/b4.png</File>
+    <File>C:/Users/cube2166/Documents/Visual Studio 2015/GitHub/Breakout-clone/trunk/Game1/Game1/Content/blank.png</File>
+    <File>C:/Users/cube2166/Documents/Visual Studio 2015/GitHub/Breakout-clone/trunk/Game1/Game1/Content/font.spritefont</File>
+    <File>C:/Users/cube2166/Documents/Visual Studio 2015/GitHub/Breakout-clone/trunk/Game1/Game1/Content/ball.png</File>
+    <File>C:/Users/cube2166/Documents/Visual Studio 2015/GitHub/Breakout-clone/trunk/Game1/Game1/Content/b1.png</File>
+    <File>C:/Users/cube2166/Documents/Visual Studio 2015/GitHub/Breakout-clone/trunk/Game1/Game1/Content/b2.png</File>
+    <File>C:/Users/cube2166/Documents/Visual Studio 2015/GitHub/Breakout-clone/trunk/Game1/Game1/Content/b3.png</File>
+    <File>C:/Users/cube2166/Documents/Visual Studio 2015/GitHub/Breakout-clone/trunk/Game1/Game1/Content/b4.png</File>
+    <File>C:/Users/cube2166/Documents/Visual Studio 2015/GitHub/Breakout-clone/trunk/Game1/Game1/Content/GameState.spritefont</File>
   </SourceFiles>
 </SourceFileCollection>
